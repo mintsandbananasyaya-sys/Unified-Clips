@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Unified Clips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ---- ABOUT PAGE SPECIFIC ---- */
+.about-hero{
+  padding-top:clamp(48px,8vw,72px);
+  padding-bottom:clamp(28px,5vw,40px);
+}
+.about-hero-title{
+  font-family:var(--font-display);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.01em;
+  line-height:0.95;
+  font-size:clamp(2.2rem,5.2vw,3.4rem);
+  margin-top:0.5rem;
+}
+.about-hero-sub{
+  margin-top:1rem;
+  color:var(--mist);
+  font-size:1.02rem;
+  max-width:560px;
+}
+
+/* How it works — step rail, mirrors trending's visual weight without borrowing numbered-marker pattern from Events */
+.how-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.2rem;
+}
+.how-card{
+  background:var(--void-soft);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:1.7rem 1.6rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.9rem;
+}
+.how-icon{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border:1px solid var(--line);
+  color:var(--blue);
+  flex-shrink:0;
+}
+.how-card h3{font-family:var(--font-display);font-weight:700;font-size:1.18rem;}
+.how-card p{font-size:0.9rem;color:var(--mist);}
+.how-card a{
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--blue);margin-top:auto;
+}
+
+/* Guidelines list — reuses upload.html sidebar's visual register */
+.guidelines-shell{
+  background:var(--void-soft);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.guideline-row{
+  display:flex;gap:1rem;
+  padding:1.3rem 1.5rem;
+  border-bottom:1px solid var(--line-soft);
+}
+.guideline-row:last-child{border-bottom:none;}
+.guideline-mark{
+  flex-shrink:0;
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border:1px solid var(--line);
+  font-family:var(--font-mono);font-size:0.72rem;color:var(--mist);
+  margin-top:0.1rem;
+}
+.guideline-row.is-dont .guideline-mark{color:var(--red);border-color:rgba(255,59,78,0.3);}
+.guideline-row.is-do .guideline-mark{color:var(--blue);border-color:rgba(65,105,255,0.3);}
+.guideline-body h4{font-size:0.96rem;font-weight:600;margin-bottom:0.3rem;}
+.guideline-body p{font-size:0.87rem;color:var(--mist);}
+
+/* Category key — explains the pill categories from upload.html */
+.cat-key-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+}
+.cat-key-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:1.3rem 1.2rem;
+  display:flex;flex-direction:column;gap:0.6rem;
+}
+.cat-key-pill{
+  align-self:flex-start;
+  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.32rem 0.8rem;border-radius:99px;color:#fff;
+}
+.cat-key-card p{font-size:0.84rem;color:var(--mist);}
+
+/* FAQ accordion */
+.faq-shell{
+  display:flex;flex-direction:column;gap:0.7rem;
+}
+.faq-item{
+  background:var(--void-soft);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.faq-q{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;
+  padding:1.15rem 1.4rem;
+  background:none;border:none;
+  text-align:left;
+  font-family:var(--font-body);font-weight:600;font-size:0.95rem;color:var(--ink);
+}
+.faq-q .chevron{
+  flex-shrink:0;
+  width:9px;height:9px;
+  border-right:1.5px solid var(--mist);
+  border-bottom:1.5px solid var(--mist);
+  transform:rotate(45deg);
+  transition:transform 0.18s ease;
+}
+.faq-item.open .faq-q .chevron{transform:rotate(225deg);}
+.faq-a{
+  max-height:0;overflow:hidden;
+  opacity:0;
+  transition:max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+  padding:0 1.4rem;
+}
+.faq-item.open .faq-a{
+  max-height:240px;
+  opacity:1;
+  padding:0 1.4rem 1.3rem;
+}
+.faq-a p{font-size:0.88rem;color:var(--mist);}
+
+/* CTA band */
+.about-cta{
+  background:var(--void-soft);
+  border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+  text-align:center;
+}
+.about-cta h2{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.3rem);
+  max-width:520px;margin:0.6rem auto 0;
+}
+.about-cta p{color:var(--mist);max-width:480px;margin:0.9rem auto 0;}
+.about-cta-actions{
+  display:flex;align-items:center;justify-content:center;gap:0.9rem;
+  margin-top:1.8rem;flex-wrap:wrap;
+}
+
+@media (max-width:900px){
+  .how-grid{grid-template-columns:1fr;}
+  .cat-key-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:640px){
+  .cat-key-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+        <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+      </svg>
+      UNIFIED CLIPS
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="civilizations.html">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html" class="active" aria-current="page">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="auth-chip" id="authChip">
+        <span class="avatar">GU</span>
+        <span class="username">guest_user</span>
+      </div>
+      <button class="btn btn-primary btn-small" data-auth-btn>Login with Discord</button>
+      <button class="nav-burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="wrap">
+      <a href="index.html">Home</a>
+      <a href="civilizations.html">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html" class="active" aria-current="page">About</a>
+      <button class="btn btn-primary" data-auth-btn>Login with Discord</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="about-hero">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow is-blue">About</span>
+        <h1 class="about-hero-title">How Unified Clips Works</h1>
+        <p class="about-hero-sub">A quick guide to browsing, watching, and uploading clips from across the Civ Union — plus the ground rules that keep the feed worth scrolling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-blue">Getting Started</span>
+        <h2>Three things you can do here</h2>
+        <p>No account is required to watch. Uploading just needs a video file and a few details — login comes later.</p>
+      </div>
+
+      <div class="how-grid">
+        <div class="how-card reveal in">
+          <div class="how-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3>Browse trending clips</h3>
+          <p>The homepage feed is ranked by watch time, likes, and replays. Filter by PvP, Diplomacy, Build, or Chaos to narrow it down, or check the recent uploads feed for what just dropped.</p>
+          <a href="index.html#trending">Go to trending ↗</a>
+        </div>
+
+        <div class="how-card reveal in">
+          <div class="how-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16.6 16.6"/></svg>
+          </div>
+          <h3>Find a civilization</h3>
+          <p>Every clip is tied to a real civilization community. Search or filter by season status — Active, Recruiting, or Concluded — to see who's running events right now.</p>
+          <a href="civilizations.html">Go to civilizations ↗</a>
+        </div>
+
+        <div class="how-card reveal in">
+          <div class="how-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <h3>Upload your own clip</h3>
+          <p>Drop in a video file, give it a title, pick the civilization and category it's from, and submit. A live preview and checklist confirm everything's filled in before you send it.</p>
+          <a href="upload.html">Go to upload ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORY KEY ================= -->
+  <section id="categories" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-red">Categories</span>
+        <h2>What each tag means</h2>
+        <p>Every clip gets filed under one category. Here's how to pick the right one when you upload.</p>
+      </div>
+
+      <div class="cat-key-grid">
+        <div class="cat-key-card reveal in">
+          <span class="cat-key-pill" style="background:linear-gradient(115deg,var(--blue),var(--red));">PvP</span>
+          <p>Direct fights — raids, sieges, duels, last-stands. Anything decided with weapons.</p>
+        </div>
+        <div class="cat-key-card reveal in">
+          <span class="cat-key-pill" style="background:linear-gradient(115deg,var(--violet),var(--blue));">Diplomacy</span>
+          <p>Alliances, votes, betrayals, leaked deals — the political side of a season.</p>
+        </div>
+        <div class="cat-key-card reveal in">
+          <span class="cat-key-pill" style="background:linear-gradient(115deg,#3bdfff,var(--blue));">Build</span>
+          <p>Builds, reveals, and construction moments worth showing off on their own merit.</p>
+        </div>
+        <div class="cat-key-card reveal in">
+          <span class="cat-key-pill" style="background:linear-gradient(115deg,#ffb13b,var(--red));">Chaos</span>
+          <p>Everything that doesn't fit cleanly elsewhere — the unplanned, the chaotic, the funny.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTENT GUIDELINES ================= -->
+  <section id="guidelines" class="civ-spotlight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-blue">Before You Upload</span>
+        <h2>Content guidelines</h2>
+        <p>These keep the feed made of real moments from real events, not edited filler.</p>
+      </div>
+
+      <div class="guidelines-shell reveal in">
+        <div class="guideline-row is-do">
+          <div class="guideline-mark">✓</div>
+          <div class="guideline-body">
+            <h4>Clips from official Civ Union events</h4>
+            <p>Footage should come from an actual event run by one of the linked civilizations — not a private session or unaffiliated server.</p>
+          </div>
+        </div>
+        <div class="guideline-row is-do">
+          <div class="guideline-mark">✓</div>
+          <div class="guideline-body">
+            <h4>Raw gameplay</h4>
+            <p>Upload the moment as it happened. No edited compilations and no music overlays — the feed is about what occurred, not a highlight reel production.</p>
+          </div>
+        </div>
+        <div class="guideline-row is-do">
+          <div class="guideline-mark">✓</div>
+          <div class="guideline-body">
+            <h4>Descriptive titles</h4>
+            <p>Say what happened, not who won. A title like "Copperdale sneaks a midnight raid past two watchtowers" tells viewers what they're about to watch.</p>
+          </div>
+        </div>
+        <div class="guideline-row is-dont">
+          <div class="guideline-mark">✕</div>
+          <div class="guideline-body">
+            <h4>Misleading titles get removed</h4>
+            <p>Titles written to bait clicks or misrepresent the outcome of a clip will be taken down on review.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-red">Common Questions</span>
+        <h2>FAQ</h2>
+      </div>
+
+      <div class="faq-shell" id="faqShell">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            Do I need an account to upload?
+            <span class="chevron"></span>
+          </button>
+          <div class="faq-a"><p>Not right now. Login with Discord is coming, but for the moment you can submit a clip with just a username, no account required.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            What file types and size are allowed?
+            <span class="chevron"></span>
+          </button>
+          <div class="faq-a"><p>MP4, MOV, and WEBM are all accepted, up to 500 MB per file.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            My civilization isn't in the dropdown — what do I do?
+            <span class="chevron"></span>
+          </button>
+          <div class="faq-a"><p>Only civilizations linked to the Civ Union appear on the upload form. If yours is missing, it likely isn't partnered yet — check the Civilizations page for the current list.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            How long does review take before a clip shows up?
+            <span class="chevron"></span>
+          </button>
+          <div class="faq-a"><p>Clips are reviewed before appearing in the feed. There's no backend wired up yet, so submissions aren't live-processed at this time — that's coming soon.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            Can I upload an edited compilation or clip with music?
+            <span class="chevron"></span>
+          </button>
+          <div class="faq-a"><p>No — uploads should be raw gameplay from the moment it happened. Edited compilations and music overlays don't meet the content guidelines.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="about-cta">
+    <div class="wrap">
+      <div class="reveal in">
+        <span class="eyebrow is-blue">Ready when you are</span>
+        <h2>Got a clip worth saving?</h2>
+        <p>Upload it and it'll appear in the trending feed once it's reviewed.</p>
+        <div class="about-cta-actions">
+          <a href="upload.html" class="btn btn-primary">Upload a Clip</a>
+          <a href="index.html" class="btn btn-ghost">Browse Trending Clips</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+            <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+          </svg>
+          UNIFIED CLIPS
+        </a>
+        <p>The social home for highlights from Minecraft civilization events — watch, share, and discover clips from across the Civ Union.</p>
+        <button class="btn btn-ghost btn-small" style="margin-top:1.1rem;" data-auth-btn>Login with Discord</button>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="index.html">Home</a>
+        <a href="civilizations.html">Civilizations</a>
+        <a href="upload.html">Upload</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#">Discord Server</a>
+        <a href="#">Twitter / X</a>
+        <a href="#">YouTube</a>
+        <a href="#">TikTok</a>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="#">Content Guidelines</a>
+        <a href="#">Rules &amp; Conditions</a>
+        <a href="#">Report a Clip</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Unified Clips. Not affiliated with Mojang or Microsoft.</span>
+      <span>Built for the Civilization Union.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+// ---- FAQ ACCORDION ----
+document.querySelectorAll(".faq-item").forEach(item => {
+  const btn = item.querySelector(".faq-q");
+  btn.addEventListener("click", () => {
+    const isOpen = item.classList.toggle("open");
+    btn.setAttribute("aria-expanded", isOpen);
+  });
+});
+</script>
+</body>
+</html>

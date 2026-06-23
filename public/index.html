@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unified Clips — Civilization Event Highlights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+        <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+      </svg>
+      UNIFIED CLIPS
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html" class="active" aria-current="page">Home</a>
+      <a href="civilizations.html">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="auth-chip" id="authChip">
+        <span class="avatar">GU</span>
+        <span class="username">guest_user</span>
+      </div>
+      <button class="btn btn-primary btn-small" data-auth-btn>Login with Discord</button>
+      <button class="nav-burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="wrap">
+      <a href="index.html" class="active" aria-current="page">Home</a>
+      <a href="civilizations.html">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html">About</a>
+      <button class="btn btn-primary" data-auth-btn>Login with Discord</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-glow blue"></div>
+    <div class="hero-glow red"></div>
+    <div class="seam"></div>
+
+    <div class="wrap hero-grid">
+      <div class="hero-content reveal">
+        <span class="eyebrow">The Highlight Reel of the Civ Union</span>
+        <h1 class="wordmark">UNIFIED<br>CLIPS</h1>
+        <p class="hero-sub">Where every betrayal, siege, election upset, and last-second steal from across the Civilization Union gets clipped, watched, and argued about.</p>
+        <div class="hero-actions">
+          <a href="upload.html" class="btn btn-ghost">Upload a Clip ↗</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>12,480</strong><span>Clips uploaded</span></div>
+          <div class="hero-stat"><strong>38</strong><span>Civilizations linked</span></div>
+          <div class="hero-stat"><strong>2.1M</strong><span>Views this season</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRENDING ================= -->
+  <section id="trending">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-blue">Trending</span>
+        <h2>Clips everyone's talking about</h2>
+        <p>Ranked by watch time, likes, and replays over the last 7 days across every linked civilization.</p>
+      </div>
+
+      <div class="filter-tabs" role="tablist" aria-label="Filter trending clips">
+        <button class="tab active" data-filter="all">All</button>
+        <button class="tab" data-filter="pvp">PvP</button>
+        <button class="tab" data-filter="diplomacy">Diplomacy</button>
+        <button class="tab" data-filter="build">Builds</button>
+        <button class="tab" data-filter="chaos">Chaos</button>
+      </div>
+
+      <div class="clip-grid" id="clipGrid"></div>
+
+      <div class="load-more-row">
+        <button class="btn btn-ghost" id="loadMoreBtn">Load more clips</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CIVILIZATION SPOTLIGHT ================= -->
+  <section class="civ-spotlight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-red">Civilization Spotlight</span>
+        <h2>Communities behind the clips</h2>
+        <p>Every clip on Unified Clips is tied back to a real civilization community. Here's who's active right now.</p>
+      </div>
+
+      <div class="spotlight-grid" id="spotlightGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= RECENT UPLOADS ================= -->
+  <section class="recent-uploads">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow is-blue">Just Uploaded</span>
+        <h2>Recent uploads feed</h2>
+        <p>The freshest clips, in the order players submitted them.</p>
+      </div>
+
+      <div class="feed-shell reveal">
+        <ul class="feed-list" id="feedList"></ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+            <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+          </svg>
+          UNIFIED CLIPS
+        </a>
+        <p>The social home for highlights from Minecraft civilization events — watch, share, and discover clips from across the Civ Union.</p>
+        <button class="btn btn-ghost btn-small" style="margin-top:1.1rem;" data-auth-btn>Login with Discord</button>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="index.html">Home</a>
+        <a href="civilizations.html">Civilizations</a>
+        <a href="upload.html">Upload</a>
+        <a href="about.html">About</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#">Discord Server</a>
+        <a href="#">Twitter / X</a>
+        <a href="#">YouTube</a>
+        <a href="#">TikTok</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="#">Content Guidelines</a>
+        <a href="#">Rules &amp; Conditions</a>
+        <a href="#">Report a Clip</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Unified Clips. Not affiliated with Mojang or Microsoft.</span>
+      <span>Built for the Civilization Union.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

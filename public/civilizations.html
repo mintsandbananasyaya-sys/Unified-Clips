@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civilizations — Unified Clips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+        <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+      </svg>
+      UNIFIED CLIPS
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="civilizations.html" class="active" aria-current="page">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="auth-chip" id="authChip">
+        <span class="avatar">GU</span>
+        <span class="username">guest_user</span>
+      </div>
+      <button class="btn btn-primary btn-small" data-auth-btn>Login with Discord</button>
+      <button class="nav-burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="wrap">
+      <a href="index.html">Home</a>
+      <a href="civilizations.html" class="active" aria-current="page">Civilizations</a>
+      <a href="upload.html">Upload</a>
+      <a href="about.html">About</a>
+      <button class="btn btn-primary" data-auth-btn>Login with Discord</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="civ-page-hero">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow is-blue">Civilization Union</span>
+        <h1 class="civ-page-title">Civilizations</h1>
+        <p class="civ-page-sub">Every server linked to Unified Clips, with the people, seasons, and scale behind each one. Find a civilization to start tracking its clips.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DIRECTORY ================= -->
+  <section class="civ-directory">
+    <div class="wrap">
+
+      <div class="directory-controls reveal">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21 L16.6 16.6"/></svg>
+          <input type="text" id="civSearch" placeholder="Search civilizations…" aria-label="Search civilizations">
+        </div>
+
+        <div class="filter-tabs" role="tablist" aria-label="Filter civilizations by status">
+          <button class="tab active" data-status="all">All</button>
+          <button class="tab" data-status="active">Active Season</button>
+          <button class="tab" data-status="recruiting">Recruiting</button>
+          <button class="tab" data-status="concluded">Concluded</button>
+        </div>
+      </div>
+
+      <p class="directory-count" id="directoryCount" aria-live="polite"></p>
+
+      <div class="civ-directory-grid" id="civDirectoryGrid"></div>
+
+      <p class="directory-empty" id="directoryEmpty" hidden>No civilizations match your search. Try a different name.</p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 2 L29 16 L16 30 L16 16 Z" fill="#4169ff"/>
+            <path d="M16 2 L3 16 L16 30 L16 16 Z" fill="#ff3b4e"/>
+          </svg>
+          UNIFIED CLIPS
+        </a>
+        <p>The social home for highlights from Minecraft civilization events — watch, share, and discover clips from across the Civ Union.</p>
+        <button class="btn btn-ghost btn-small" style="margin-top:1.1rem;" data-auth-btn>Login with Discord</button>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="index.html">Home</a>
+        <a href="civilizations.html">Civilizations</a>
+        <a href="upload.html">Upload</a>
+        <a href="about.html">About</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#">Discord Server</a>
+        <a href="#">Twitter / X</a>
+        <a href="#">YouTube</a>
+        <a href="#">TikTok</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="#">Content Guidelines</a>
+        <a href="#">Rules &amp; Conditions</a>
+        <a href="#">Report a Clip</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Unified Clips. Not affiliated with Mojang or Microsoft.</span>
+      <span>Built for the Civilization Union.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
