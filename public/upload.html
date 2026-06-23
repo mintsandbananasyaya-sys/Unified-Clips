@@ -8,469 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<style>
-/* ---- UPLOAD PAGE SPECIFIC ---- */
-.upload-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 2.4rem;
-  align-items: start;
-  padding-bottom: clamp(56px, 9vw, 104px);
-}
-
-/* Form fields */
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.field label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mist);
-}
-
-.field label .req {
-  color: var(--red);
-  margin-left: 3px;
-}
-
-.field input[type="text"],
-.field select,
-.field textarea {
-  background: var(--void-soft);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 0.8rem 1rem;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--ink);
-  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-.field input[type="text"]::placeholder,
-.field textarea::placeholder {
-  color: var(--mist-dim);
-}
-
-.field input[type="text"]:focus,
-.field select:focus,
-.field textarea:focus {
-  outline: none;
-  border-color: rgba(65,105,255,0.55);
-  background: var(--panel);
-  box-shadow: 0 0 0 3px rgba(65,105,255,0.1);
-}
-
-.field select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b92a6' stroke-width='1.8'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.9rem center;
-  background-size: 16px;
-  padding-right: 2.5rem;
-  cursor: pointer;
-}
-
-.field select option {
-  background: var(--panel);
-  color: var(--ink);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 110px;
-  line-height: 1.6;
-}
-
-.field-hint {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--mist-dim);
-  letter-spacing: 0.02em;
-  margin-top: 0.1rem;
-}
-
-/* Two-column row for title + uploader */
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
-}
-
-/* Category pill selector */
-.cat-pills {
-  display: flex;
-  gap: 0.55rem;
-  flex-wrap: wrap;
-}
-
-.cat-pill {
-  appearance: none;
-  display: none;
-}
-
-.cat-pill + label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 1.1rem;
-  border-radius: 99px;
-  border: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--mist);
-  cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-  user-select: none;
-}
-
-.cat-pill + label:hover {
-  border-color: rgba(255,255,255,0.3);
-  color: var(--ink);
-}
-
-.cat-pill:checked + label {
-  background: linear-gradient(115deg, var(--blue), var(--red));
-  color: #fff;
-  border-color: transparent;
-}
-
-/* Drop zone */
-.drop-zone {
-  border: 1.5px dashed rgba(255,255,255,0.15);
-  border-radius: var(--radius-lg);
-  padding: 2.8rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  background: var(--void-soft);
-  position: relative;
-}
-
-.drop-zone:hover,
-.drop-zone.drag-over {
-  border-color: rgba(65,105,255,0.5);
-  background: rgba(65,105,255,0.04);
-}
-
-.drop-zone input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-
-.drop-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.drop-icon svg {
-  color: var(--blue);
-}
-
-.drop-label {
-  font-weight: 600;
-  font-size: 0.97rem;
-}
-
-.drop-label span {
-  color: var(--blue);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.drop-sub {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.04em;
-  color: var(--mist-dim);
-  text-transform: uppercase;
-}
-
-.drop-file-name {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--blue);
-  display: none;
-  gap: 0.4rem;
-  align-items: center;
-}
-
-.drop-file-name.visible {
-  display: inline-flex;
-}
-
-/* Preview card (sidebar) */
-.upload-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-}
-
-.sidebar-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 1.4rem;
-}
-
-.sidebar-card-title {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--mist-dim);
-  margin-bottom: 1.1rem;
-}
-
-/* Live preview card */
-.preview-thumb {
-  aspect-ratio: 16/9;
-  border-radius: var(--radius);
-  background: var(--void-soft);
-  border: 1px solid var(--line-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.preview-thumb-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--mist-dim);
-}
-
-.preview-thumb-placeholder svg {
-  opacity: 0.4;
-}
-
-.preview-thumb-placeholder span {
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.preview-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  min-height: 1.4em;
-  color: var(--ink);
-  line-height: 1.25;
-}
-
-.preview-title.empty {
-  color: var(--mist-dim);
-  font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
-}
-
-.preview-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-top: 0.55rem;
-}
-
-.preview-civ-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--blue);
-  flex-shrink: 0;
-  transition: background 0.2s ease;
-}
-
-.preview-civ-name {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--mist-dim);
-}
-
-/* Checklist */
-.checklist {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-size: 0.86rem;
-  color: var(--mist);
-  transition: color 0.15s ease;
-}
-
-.check-item.done {
-  color: var(--ink);
-}
-
-.check-dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.check-item.done .check-dot {
-  background: linear-gradient(135deg, var(--blue), var(--red));
-  border-color: transparent;
-}
-
-.check-dot svg {
-  display: none;
-}
-
-.check-item.done .check-dot svg {
-  display: block;
-}
-
-/* Submit row */
-.submit-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.submit-note {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--mist-dim);
-  letter-spacing: 0.02em;
-}
-
-/* Upload page hero — lighter than homepage */
-.upload-hero {
-  padding-top: clamp(40px, 7vw, 64px);
-  padding-bottom: clamp(28px, 4vw, 40px);
-}
-
-.upload-hero-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-  line-height: 0.95;
-  font-size: clamp(2.2rem, 5.2vw, 3.4rem);
-  margin-top: 0.5rem;
-}
-
-.upload-hero-sub {
-  margin-top: 1rem;
-  color: var(--mist);
-  font-size: 1.02rem;
-  max-width: 520px;
-}
-
-/* Toast (submit feedback) */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--panel-raised);
-  border: 1px solid rgba(65,105,255,0.4);
-  border-radius: 99px;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink);
-  letter-spacing: 0.03em;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  box-shadow: 0 12px 36px -8px rgba(0,0,0,0.6);
-  opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-  z-index: 200;
-  white-space: nowrap;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.toast-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--blue);
-  flex-shrink: 0;
-}
-
-/* Section divider */
-.form-section-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--mist-dim);
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--line-soft);
-  margin-bottom: 1.5rem;
-}
-
-@media (max-width: 900px) {
-  .upload-layout {
-    grid-template-columns: 1fr;
-  }
-  .upload-sidebar {
-    order: -1;
-  }
-  .field-row {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
 </head>
 <body>
 
@@ -514,181 +51,88 @@
   </div>
 </header>
 
-<main>
+<main id="top">
 
-  <section class="upload-hero">
+  <!-- ================= PAGE HEADER ================= -->
+  <section class="civ-page-hero">
     <div class="wrap">
-      <div class="reveal in">
+      <div class="reveal">
         <span class="eyebrow is-blue">Submit a Clip</span>
-        <h1 class="upload-hero-title">Upload a Clip</h1>
-        <p class="upload-hero-sub">Got a moment worth saving? Submit your clip and it'll appear in the trending feed once it's reviewed.</p>
+        <h1 class="civ-page-title">Upload</h1>
+        <p class="civ-page-sub">Submit a clip from any linked civilization event. Every upload is reviewed by staff before it goes live on Trending or the Recent Uploads feed.</p>
       </div>
     </div>
   </section>
 
-  <div class="wrap upload-layout">
+  <!-- ================= UPLOAD FORM ================= -->
+  <section class="upload-section">
+    <div class="wrap upload-wrap">
 
-    <!-- LEFT: FORM -->
-    <div>
-      <p class="form-section-label">Clip details</p>
+      <form class="upload-form reveal" id="uploadForm" novalidate>
 
-      <div class="field-group">
+        <div class="form-group">
+          <label for="title">Clip title <span class="req">*</span></label>
+          <input type="text" id="title" name="title" maxlength="100" placeholder="e.g. Vespera's last wall falls in under a minute" required>
+          <span class="field-hint">Max 100 characters.</span>
+        </div>
 
-        <!-- Drop zone -->
-        <div class="field">
-          <label>Video file <span class="req">*</span></label>
-          <div class="drop-zone" id="dropZone">
-            <input type="file" id="fileInput" accept="video/*" aria-label="Upload video file">
-            <div class="drop-icon">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-              </svg>
-            </div>
-            <p class="drop-label"><span>Choose a file</span> or drag it here</p>
-            <p class="drop-sub">MP4 · MOV · WEBM &nbsp;·&nbsp; Max 500 MB</p>
-            <span class="drop-file-name" id="dropFileName">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="dropFileNameText"></span>
-            </span>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="civilization">Civilization <span class="req">*</span></label>
+            <input type="text" id="civilization" name="civilization" placeholder="e.g. Oracles" required>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category <span class="req">*</span></label>
+            <select id="category" name="category" required>
+              <option value="" disabled selected>Select a category</option>
+              <option value="pvp">PvP</option>
+              <option value="diplomacy">Diplomacy</option>
+              <option value="build">Build</option>
+              <option value="chaos">Chaos</option>
+            </select>
           </div>
         </div>
 
-        <!-- Title + Uploader -->
-        <div class="field-row">
-          <div class="field">
-            <label for="clipTitle">Clip title <span class="req">*</span></label>
-            <input type="text" id="clipTitle" placeholder="What happens in this clip?" maxlength="100">
-            <span class="field-hint">Keep it specific — what happened and who was involved.</span>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" maxlength="500" rows="4" placeholder="What happens in this clip? (optional, max 500 characters)"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="videoUrl">Video link <span class="req">*</span></label>
+            <input type="url" id="videoUrl" name="videoUrl" placeholder="https://youtu.be/…" required>
+            <span class="field-hint">YouTube, Streamable, or direct video link.</span>
           </div>
-          <div class="field">
-            <label for="uploaderName">Your username <span class="req">*</span></label>
-            <input type="text" id="uploaderName" placeholder="e.g. thornback_" maxlength="32">
-            <span class="field-hint">The name shown under your clip in the feed.</span>
+
+          <div class="form-group">
+            <label for="duration">Duration</label>
+            <input type="text" id="duration" name="duration" placeholder="e.g. 1:24">
           </div>
         </div>
 
-        <!-- Civilization dropdown -->
-        <div class="field">
-          <label for="civSelect">Civilization <span class="req">*</span></label>
-          <select id="civSelect">
-            <option value="" disabled selected>Select the civilization this clip is from…</option>
-            <option value="Oracles">Oracles</option>
-            <option value="Crabby's Civ">Crabby's Civ</option>
-            <option value="Liquid's Civ">Liquid's Civ</option>
-            <option value="Prite's Events">Prite's Events</option>
-            <option value="JCrimzy's Civ">JCrimzy's Civ</option>
-            <option value="PrestonMC">PrestonMC</option>
-            <option value="Archie's Civ">Archie's Civ</option>
-          </select>
-          <span class="field-hint">Only civilizations linked to the Civ Union are listed.</span>
+        <div class="form-group">
+          <label for="thumbnailUrl">Thumbnail link</label>
+          <input type="url" id="thumbnailUrl" name="thumbnailUrl" placeholder="https://… (optional, defaults to a placeholder)">
         </div>
 
-        <!-- Category pills -->
-        <div class="field">
-          <label>Category <span class="req">*</span></label>
-          <div class="cat-pills" role="group" aria-label="Clip category">
-            <input class="cat-pill" type="radio" name="category" id="cat-pvp" value="pvp">
-            <label for="cat-pvp">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17 5.8 21.3l2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-              PvP
-            </label>
-            <input class="cat-pill" type="radio" name="category" id="cat-diplomacy" value="diplomacy">
-            <label for="cat-diplomacy">Diplomacy</label>
-            <input class="cat-pill" type="radio" name="category" id="cat-build" value="build">
-            <label for="cat-build">Build</label>
-            <input class="cat-pill" type="radio" name="category" id="cat-chaos" value="chaos">
-            <label for="cat-chaos">Chaos</label>
-          </div>
+        <div class="form-group">
+          <label for="uploaderUsername">Your name / username <span class="req">*</span></label>
+          <input type="text" id="uploaderUsername" name="uploaderUsername" placeholder="How you want to be credited" required>
         </div>
 
-        <!-- Description -->
-        <div class="field">
-          <label for="clipDesc">Description</label>
-          <textarea id="clipDesc" placeholder="Give some context — what season, what was at stake, who the key players were. Helps viewers understand what they're watching."></textarea>
-          <span class="field-hint">Optional but recommended. Max 500 characters.</span>
+        <div class="form-footer">
+          <p class="form-disclaimer">Clips are reviewed before appearing publicly. Submitting false information about a civilization or event may result in removal.</p>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Submit Clip</button>
         </div>
 
-      </div>
+        <div class="form-status" id="formStatus" hidden></div>
 
-      <div class="submit-row" style="margin-top: 2rem;">
-        <button class="btn btn-primary" id="submitBtn" type="button">Submit clip</button>
-        <span class="submit-note">No account needed right now — login comes later.</span>
-      </div>
-    </div>
-
-    <!-- RIGHT: SIDEBAR -->
-    <div class="upload-sidebar">
-
-      <!-- Live preview -->
-      <div class="sidebar-card">
-        <p class="sidebar-card-title">Preview</p>
-        <div class="preview-thumb">
-          <div class="preview-thumb-placeholder" id="previewPlaceholder">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none"/>
-            </svg>
-            <span>No file selected</span>
-          </div>
-        </div>
-        <p class="preview-title empty" id="previewTitle">Title will appear here</p>
-        <div class="preview-meta">
-          <div class="preview-civ-dot" id="previewDot"></div>
-          <span class="preview-civ-name" id="previewCiv">No civilization selected</span>
-        </div>
-      </div>
-
-      <!-- Checklist -->
-      <div class="sidebar-card">
-        <p class="sidebar-card-title">Before you submit</p>
-        <div class="checklist">
-          <div class="check-item" id="chk-file">
-            <div class="check-dot">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Video file attached</span>
-          </div>
-          <div class="check-item" id="chk-title">
-            <div class="check-dot">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Clip has a title</span>
-          </div>
-          <div class="check-item" id="chk-uploader">
-            <div class="check-dot">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Username filled in</span>
-          </div>
-          <div class="check-item" id="chk-civ">
-            <div class="check-dot">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Civilization selected</span>
-          </div>
-          <div class="check-item" id="chk-cat">
-            <div class="check-dot">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Category picked</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Guidelines -->
-      <div class="sidebar-card">
-        <p class="sidebar-card-title">Content guidelines</p>
-        <div style="display:flex;flex-direction:column;gap:0.7rem;">
-          <p style="font-size:0.84rem;color:var(--mist);line-height:1.55;">Clips must be from an official Civ Union event. Raw gameplay only — no edited compilations or music overlays.</p>
-          <p style="font-size:0.84rem;color:var(--mist);line-height:1.55;">Keep titles descriptive: what happened, not who won. Misleading titles get removed.</p>
-          <a href="about.html" style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--blue);">Full guidelines ↗</a>
-        </div>
-      </div>
+      </form>
 
     </div>
-  </div>
+  </section>
 
 </main>
 
@@ -706,6 +150,7 @@
         <p>The social home for highlights from Minecraft civilization events — watch, share, and discover clips from across the Civ Union.</p>
         <button class="btn btn-ghost btn-small" style="margin-top:1.1rem;" data-auth-btn>Login with Discord</button>
       </div>
+
       <div class="footer-col">
         <h4>Platform</h4>
         <a href="index.html">Home</a>
@@ -713,6 +158,7 @@
         <a href="upload.html">Upload</a>
         <a href="about.html">About</a>
       </div>
+
       <div class="footer-col">
         <h4>Community</h4>
         <a href="#">Discord Server</a>
@@ -720,6 +166,7 @@
         <a href="#">YouTube</a>
         <a href="#">TikTok</a>
       </div>
+
       <div class="footer-col">
         <h4>Info</h4>
         <a href="#">Content Guidelines</a>
@@ -728,6 +175,7 @@
         <a href="#">Contact</a>
       </div>
     </div>
+
     <div class="footer-bottom">
       <span>© 2026 Unified Clips. Not affiliated with Mojang or Microsoft.</span>
       <span>Built for the Civilization Union.</span>
@@ -735,165 +183,6 @@
   </div>
 </footer>
 
-<!-- Toast -->
-<div class="toast" id="toast" role="status" aria-live="polite">
-  <span class="toast-dot"></span>
-  <span id="toastMsg"></span>
-</div>
-
 <script src="app.js"></script>
-<script>
-// ---- UPLOAD PAGE LOGIC ----
-
-const civColors = window.civColors || {
-  "Oracles": "linear-gradient(135deg,#4169ff,#a25cff)",
-  "Crabby's Civ": "linear-gradient(135deg,#ff3b4e,#ffb13b)",
-  "Liquid's Civ": "linear-gradient(135deg,#4169ff,#3bdfff)",
-  "Prite's Events": "linear-gradient(135deg,#ff3b4e,#a25cff)",
-  "JCrimzy's Civ": "linear-gradient(135deg,#3bdfff,#4169ff)",
-  "PrestonMC": "linear-gradient(135deg,#ffb13b,#ff3b4e)",
-  "Archie's Civ": "linear-gradient(135deg,#a25cff,#ff3b4e)"
-};
-
-// Elements
-const fileInput    = document.getElementById("fileInput");
-const dropZone     = document.getElementById("dropZone");
-const dropFileName = document.getElementById("dropFileName");
-const dropFileNameText = document.getElementById("dropFileNameText");
-const titleInput   = document.getElementById("clipTitle");
-const uploaderInput= document.getElementById("uploaderName");
-const civSelect    = document.getElementById("civSelect");
-const descInput    = document.getElementById("clipDesc");
-const submitBtn    = document.getElementById("submitBtn");
-const toast        = document.getElementById("toast");
-const toastMsg     = document.getElementById("toastMsg");
-
-// Preview
-const previewTitle = document.getElementById("previewTitle");
-const previewCiv   = document.getElementById("previewCiv");
-const previewDot   = document.getElementById("previewDot");
-const previewPlaceholder = document.getElementById("previewPlaceholder");
-
-// Checklist items
-const chkFile     = document.getElementById("chk-file");
-const chkTitle    = document.getElementById("chk-title");
-const chkUploader = document.getElementById("chk-uploader");
-const chkCiv      = document.getElementById("chk-civ");
-const chkCat      = document.getElementById("chk-cat");
-
-// ---- FILE PICK ----
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length) handleFile(fileInput.files[0]);
-});
-
-// Drag and drop
-dropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropZone.classList.add("drag-over");
-});
-dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
-dropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropZone.classList.remove("drag-over");
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith("video/")) handleFile(file);
-  else showToast("Only video files are accepted.");
-});
-
-function handleFile(file) {
-  dropFileNameText.textContent = file.name;
-  dropFileName.classList.add("visible");
-  setCheck(chkFile, true);
-  updatePreviewThumb();
-}
-
-function updatePreviewThumb() {
-  previewPlaceholder.innerHTML = `
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
-      <rect x="2" y="4" width="20" height="16" rx="2"/>
-      <path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none"/>
-    </svg>
-    <span style="color:var(--blue)">File ready</span>
-  `;
-}
-
-// ---- LIVE PREVIEW ----
-titleInput.addEventListener("input", () => {
-  const val = titleInput.value.trim();
-  if (val) {
-    previewTitle.textContent = val;
-    previewTitle.classList.remove("empty");
-  } else {
-    previewTitle.textContent = "Title will appear here";
-    previewTitle.classList.add("empty");
-  }
-  setCheck(chkTitle, val.length > 0);
-});
-
-uploaderInput.addEventListener("input", () => {
-  setCheck(chkUploader, uploaderInput.value.trim().length > 0);
-});
-
-civSelect.addEventListener("change", () => {
-  const val = civSelect.value;
-  if (val) {
-    previewCiv.textContent = val;
-    const grad = civColors[val];
-    // Extract first color from gradient for the dot
-    const match = grad && grad.match(/#[0-9a-f]{6}/i);
-    previewDot.style.background = match ? match[0] : "var(--blue)";
-    setCheck(chkCiv, true);
-  } else {
-    previewCiv.textContent = "No civilization selected";
-    previewDot.style.background = "var(--blue)";
-    setCheck(chkCiv, false);
-  }
-});
-
-document.querySelectorAll(".cat-pill").forEach(pill => {
-  pill.addEventListener("change", () => setCheck(chkCat, true));
-});
-
-// ---- CHECKLIST ----
-function setCheck(el, done) {
-  el.classList.toggle("done", done);
-}
-
-// ---- SUBMIT ----
-submitBtn.addEventListener("click", () => {
-  const hasFile    = fileInput.files.length > 0;
-  const hasTitle   = titleInput.value.trim().length > 0;
-  const hasUploader= uploaderInput.value.trim().length > 0;
-  const hasCiv     = civSelect.value !== "";
-  const hasCat     = !!document.querySelector(".cat-pill:checked");
-
-  if (!hasFile)     { showToast("Attach a video file first."); return; }
-  if (!hasTitle)    { showToast("Add a clip title."); return; }
-  if (!hasUploader) { showToast("Fill in your username."); return; }
-  if (!hasCiv)      { showToast("Select a civilization."); return; }
-  if (!hasCat)      { showToast("Pick a category."); return; }
-
-  // All good — placeholder action
-  console.log("Upload submitted (placeholder):", {
-    title: titleInput.value.trim(),
-    uploader: uploaderInput.value.trim(),
-    civ: civSelect.value,
-    category: document.querySelector(".cat-pill:checked")?.value,
-    description: descInput.value.trim(),
-    file: fileInput.files[0]?.name
-  });
-
-  showToast("Clip received — backend coming soon.");
-});
-
-// ---- TOAST ----
-let toastTimer;
-function showToast(msg) {
-  toastMsg.textContent = msg;
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
-}
-</script>
 </body>
 </html>
