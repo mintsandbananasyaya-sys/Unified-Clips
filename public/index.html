@@ -65,6 +65,7 @@
         <h1 class="wordmark">UNIFIED<br>CLIPS</h1>
         <p class="hero-sub">Where every betrayal, siege, election upset, and last-second steal from across the Civilization Union gets clipped, watched, and argued about.</p>
         <div class="hero-actions">
+          <a href="#trending" class="btn btn-primary">Watch Trending Clips</a>
           <a href="upload.html" class="btn btn-ghost">Upload a Clip ↗</a>
         </div>
         <div class="hero-stats">
@@ -73,6 +74,9 @@
           <div class="hero-stat"><strong>2.1M</strong><span>Views this season</span></div>
         </div>
       </div>
+
+      <!-- Filled by app.js with the top clip by views once /api/clips loads -->
+      <div class="hero-feature reveal" id="featuredClip"></div>
     </div>
   </section>
 
