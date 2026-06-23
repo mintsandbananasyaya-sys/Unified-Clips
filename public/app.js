@@ -1,7 +1,7 @@
 /* =========================
    UNIFIED CLIPS — app.js
    Shared across all pages.
-   Auth now loads from /auth/me (real session, not a stub).
+   Auth loads from /auth/me (real session, not a stub).
 ========================= */
 
 const civColors = {
@@ -11,7 +11,8 @@ const civColors = {
   "Prite's Events":"linear-gradient(135deg,#ff3b4e,#a25cff)",
   "JCrimzy's Civ": "linear-gradient(135deg,#3bdfff,#4169ff)",
   "PrestonMC":     "linear-gradient(135deg,#ffb13b,#ff3b4e)",
-  "Archie's Civ":  "linear-gradient(135deg,#a25cff,#ff3b4e)"
+  "Archie's Civ":  "linear-gradient(135deg,#a25cff,#ff3b4e)",
+  "Luna Events":   "linear-gradient(135deg,#a25cff,#3bdfff)"
 };
 
 function thumbGradient(seed){
@@ -39,7 +40,8 @@ const civData=[
   {name:"Prite's Events",desc:"Tight-knit roleplay-driven events with a focus on diplomacy arcs over raw PvP.",season:"Season 1",members:140,clips:0,status:"recruiting"},
   {name:"JCrimzy's Civ",desc:"Fast, chaotic servers — known for the ant invasions that took over a full season.",season:"Season 2",members:185,clips:1,status:"active"},
   {name:"PrestonMC",desc:"100-player civilization events with island strandings and building showdowns.",season:"Event 3",members:100,clips:2,status:"recruiting"},
-  {name:"Archie's Civ",desc:"Election-driven civ with a history of votes that spiral into open conflict.",season:"Season 5",members:265,clips:2,status:"concluded"}
+  {name:"Archie's Civ",desc:"Election-driven civ with a history of votes that spiral into open conflict.",season:"Season 5",members:265,clips:2,status:"concluded"},
+  {name:"Luna Events",desc:"A PvP-focused civilization experiment built around discovering and settling a lost continent.",season:"Past Event",members:50,clips:0,status:"concluded"}
 ];
 
 const feedData=[
@@ -98,24 +100,20 @@ function renderAuth(){
 
 function handleAuthClick(e){
   if(currentUser){
-    // Logged in → log out
     fetch("/auth/logout",{method:"POST"}).then(()=>{
       currentUser = null;
       renderAuth();
     });
   } else {
-    // Not logged in → kick off Discord OAuth
     window.location.href = "/auth/discord";
   }
 }
 
-// Show a toast if Discord redirected back with ?auth=...
 function handleAuthQueryParam(){
   const params = new URLSearchParams(window.location.search);
   const auth = params.get("auth");
   if(!auth) return;
 
-  // Clean the URL without reloading
   const clean = window.location.pathname;
   window.history.replaceState({}, "", clean);
 
@@ -234,8 +232,7 @@ function clipGridErrorHTML(){
 
 async function fetchClips(){
   const grid=document.getElementById("clipGrid");
-  if(!grid)return;
-  grid.innerHTML=clipGridLoadingHTML();
+  if(grid) grid.innerHTML=clipGridLoadingHTML();
   try{
     const res=await fetch("/api/clips");
     if(!res.ok)throw new Error(`${res.status}`);
@@ -249,6 +246,7 @@ async function fetchClips(){
     clipsLoadFailed=true;
   }
   renderClips(getActiveFilter());
+  renderFeaturedClip();
 }
 
 function getActiveFilter(){
@@ -263,6 +261,56 @@ function renderClips(filter="all"){
   const items=allClips.filter(c=>filter==="all"||c.category===filter);
   if(items.length===0){grid.innerHTML=clipGridEmptyHTML(filter);return;}
   grid.innerHTML=items.map((c,i)=>clipCardHTML(c,i)).join("");
+}
+
+/* =========================
+   FEATURED CLIP (hero) — top clip by views
+========================= */
+function renderFeaturedClip(){
+  const slot = document.getElementById("featuredClip");
+  if (!slot) return;
+
+  if (!allClips.length){
+    slot.innerHTML = "";
+    return;
+  }
+
+  const top = [...allClips].sort((a, b) => (b.views||0) - (a.views||0))[0];
+
+  slot.innerHTML = `
+    <div class="feature-frame">
+      <div class="feature-thumb" style="background-image:${top.thumbnailUrl ? `url('${escapeHtml(top.thumbnailUrl)}')` : thumbGradient(0)}">
+        <span class="status-badge status-live"><span class="status-dot"></span>Most Watched</span>
+        <button class="play-btn" aria-label="Play ${escapeHtml(top.title)}" data-video="${escapeHtml(top.videoUrl||"")}">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3 L21 12 L5 21 Z" fill="currentColor"/></svg>
+        </button>
+        ${top.duration ? `<span class="feature-duration">${escapeHtml(top.duration)}</span>` : ""}
+      </div>
+      <div class="feature-meta">
+        <h3>${escapeHtml(top.title)}</h3>
+        <p class="feature-sub">${escapeHtml(top.civilization)}${top.category ? ` · ${escapeHtml(top.category)}` : ""}</p>
+        <div class="feature-row">
+          <span class="up-name">clipped by <strong>${escapeHtml(top.uploaderUsername)}</strong></span>
+          <span class="meta-dot">·</span>
+          <span>${formatCount(top.views)} views</span>
+          <span class="meta-dot">·</span>
+          <span>${formatCount(top.likes)} likes</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* =========================
+   VIDEO PLAYBACK
+   Basic version: opens the clip's video URL in a new tab.
+========================= */
+function setupVideoPlayback(){
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-video]");
+    if (!btn) return;
+    const url = btn.dataset.video;
+    if (url) window.open(url, "_blank", "noopener");
+  });
 }
 
 /* =========================
@@ -420,12 +468,13 @@ function setupReveal(){
 ========================= */
 async function init(){
   setupNav();
-  await loadAuthState(); // fetch /auth/me first so auth chip is correct immediately
+  await loadAuthState();
   fetchClips();
   renderSpotlight();
   renderFeed();
   setupFilters();
   setupLoadMore();
+  setupVideoPlayback();
   renderDirectory();
   setupDirectoryControls();
   setupReveal();
